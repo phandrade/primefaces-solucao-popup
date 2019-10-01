@@ -1,0 +1,128 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+
+	<h:form id="form">
+
+		<p:messages id="messages" />
+
+		<h:panelGrid id="panelDadosPessoa" columns="2" cellpadding="5">
+
+			<p:outputLabel value="Nome Pessoa" />
+			<p:inputText label="Nome Pessoa"
+				value="#{testeBean.dadosPessoaDTO.nome}" required="true" />
+
+			<p:outputLabel value="Data Nascimento" />
+			<p:calendar label="Data Nascimento"
+				value="#{testeBean.dadosPessoaDTO.dataNascimento}"
+				pattern="dd/MM/yyyy" mask="true" required="true" />
+
+			<p:outputLabel value="Grau Parentesco Filhos" />
+			<p:selectOneMenu label="Grau Parentesco Filhos"
+				value="#{testeBean.dadosPessoaDTO.grauParecentescoFilhos}"
+				required="true">
+				<f:selectItems value="#{testeBean.listaGrauParentesco}" />
+			</p:selectOneMenu>
+
+			<p:outputLabel value="Salário" />
+			<p:inputNumber label="Salário"
+				value="#{testeBean.dadosPessoaDTO.salario}" required="true" />
+
+
+		</h:panelGrid>
+
+		<h:panelGrid columns="1" layout="grid">
+
+			<p:dataTable id="listaFilhos" var="dadosFilho"
+				value="#{testeBean.dadosPessoaDTO.filhos}" selectionMode="single"
+				selection="#{testeBean.dadosFilhoSelecionado}"
+				rowKey="#{dadosFilho.nome}" >
+				
+				<p:ajax event="rowSelect" update="btnAlterar btnExcluir" />
+        		<p:ajax event="rowUnselect" update="btnAlterar btnExcluir" />
+
+				<f:facet name="header">
+			            Dados Filhos
+			        </f:facet>
+				<p:column headerText="Nome">
+					<h:outputText value="#{dadosFilho.nome}" />
+				</p:column>
+				<p:column headerText="Data Nascimento">
+					<h:outputText value="#{dadosFilho.dataNascimento}" />
+				</p:column>
+				<p:column headerText="Mesada">
+					<h:outputText value="#{dadosFilho.mesada}" />
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton value="Adicionar"
+						process="@this"
+						update=":form:panelEdicaoDadosFilho"
+						oncomplete="PF('dlgEdicaoDadosFilho').show()" action="#{testeBean.preAdicionarFilho}">
+						<f:setPropertyActionListener value="Adicionar"
+							target="#{testeBean.acaoCrudFilhos}" />
+					</p:commandButton>
+					<p:commandButton value="Alterar" id="btnAlterar"
+						disabled="#{empty testeBean.dadosFilhoSelecionado}"
+						process="@this"
+						update=":form:panelEdicaoDadosFilho"
+						oncomplete="PF('dlgEdicaoDadosFilho').show()">
+						<f:setPropertyActionListener value="Alterar"
+							target="#{testeBean.acaoCrudFilhos}" />
+					</p:commandButton>
+					<p:commandButton process="@this" value="Excluir" id="btnExcluir"
+						disabled="#{empty testeBean.dadosFilhoSelecionado}"
+						update="listaFilhos"
+						action="#{testeBean.excluirFilho}"/>
+				</f:facet>
+			</p:dataTable>			
+		</h:panelGrid>
+		<h:panelGrid columns="1" id="acoesTelaPrincipal" layout="grid">
+			<p:commandButton process="@this panelDadosPessoa" value="Atualizar valores" update="messages"/>
+		</h:panelGrid>
+
+		<p:dialog header="Editar Dados Filho" widgetVar="dlgEdicaoDadosFilho"
+			modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+			
+			<p:ajax event="close" listener="#{testeBean.encerrarEdicaoFilhos}" update="panelEdicaoDadosFilho"/>
+			
+			<p:outputPanel id="panelEdicaoDadosFilho">
+				
+				<p:messages id="messagesPopup" />
+				<h:panelGrid columns="2">
+
+					<h:outputText value="Nome" />
+					<h:inputText value="#{testeBean.dadosFilhoSelecionado.nome}" 
+						label="Nome Filho" />
+
+					<h:outputText value="Data Nascimento" />
+					<p:calendar label="Data Nascimento Filho"
+						value="#{testeBean.dadosFilhoSelecionado.dataNascimento}"
+						pattern="dd/MM/yyyy" mask="true" />
+
+					<h:outputText value="Mesada" />
+					<p:inputNumber label="Mesada"
+						value="#{testeBean.dadosFilhoSelecionado.mesada}"
+						/>
+
+				</h:panelGrid>
+				<h:panelGrid columns="1">
+					<p:commandButton value="Aplicar"
+						process="@this panelEdicaoDadosFilho"
+						action="#{testeBean.aplicarEdicaoFilhos}"
+						update="messagesPopup listaFilhos" />
+				</h:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+
+	</h:form>
+
+
+</h:body>
+</html>
