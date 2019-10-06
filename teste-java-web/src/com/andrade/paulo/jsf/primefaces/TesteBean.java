@@ -65,7 +65,7 @@ public class TesteBean implements Serializable {
 		if(dadosFilhoSelecionado.getNome().isEmpty() || dadosFilhoSelecionado.getDataNascimento() == null) {
 			
 			StringBuilder sb = new StringBuilder();
-			if(dadosFilhoSelecionado.getNome().isEmpty()) {
+			if(dadosFilhoSelecionado.getNome() == null || dadosFilhoSelecionado.getNome().isEmpty()) {
 				sb.append("O campo nome é obrigatório \r\n ");
 			}
 			if(dadosFilhoSelecionado.getDataNascimento() == null) {
@@ -78,12 +78,9 @@ public class TesteBean implements Serializable {
 			
 			if(acaoCrudFilhos.equals("Adicionar")) {
 				dadosPessoaDTO.getFilhos().add(dadosFilhoSelecionado);						
-			} else if(acaoCrudFilhos.equals("Alterar")) {
-				System.out.println("eu ein");
 			}
 			PrimeFaces.current().executeScript("PF('dlgEdicaoDadosFilho').hide()");
 		}
-		dadosFilhoSelecionado = null;
 		
 	}
 	

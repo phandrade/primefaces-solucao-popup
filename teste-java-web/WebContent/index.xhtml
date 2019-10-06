@@ -90,7 +90,7 @@
 		<p:dialog header="Editar Dados Filho" widgetVar="dlgEdicaoDadosFilho"
 			modal="true" showEffect="fade" hideEffect="fade" resizable="true">
 			
-			<p:ajax event="close" listener="#{testeBean.encerrarEdicaoFilhos}" update="panelEdicaoDadosFilho"/>
+			<p:ajax event="close" listener="#{testeBean.encerrarEdicaoFilhos}" update="panelEdicaoDadosFilho listaFilhos"/>
 			
 			<p:outputPanel id="panelEdicaoDadosFilho">
 				
@@ -98,8 +98,7 @@
 				<h:panelGrid columns="2">
 
 					<h:outputText value="Nome" />
-					<h:inputText value="#{testeBean.dadosFilhoSelecionado.nome}" 
-						label="Nome Filho" />
+					<h:inputText value="#{testeBean.dadosFilhoSelecionado.nome}" label="Nome Filho" />
 
 					<h:outputText value="Data Nascimento" />
 					<p:calendar label="Data Nascimento Filho"
